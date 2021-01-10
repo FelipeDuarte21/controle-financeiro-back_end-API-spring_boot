@@ -24,11 +24,11 @@ public class UserService {
 		return null;
 	}
 	
-	public Page<User> findByNome(String nome, int number, int size){
+	public Page<User> findByNome(String nome, Integer number, Integer size){
 		return null;
 	}
 	
-	public Page<User> findAll(int number, int size){
+	public Page<User> findAll(Integer number, Integer size){
 		return null;
 	}
 	

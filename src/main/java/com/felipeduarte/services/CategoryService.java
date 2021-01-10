@@ -14,7 +14,7 @@ public class CategoryService {
 		return null;
 	}
 	
-	public boolean delete(CategoryService category) {
+	public boolean delete(Long id) {
 		return false;
 	}
 	
@@ -22,11 +22,11 @@ public class CategoryService {
 		return null;
 	}
 	
-	public Page<CategoryService> findByName(String name, int number, int size){
+	public Page<CategoryService> findByName(String name, Integer number, Integer size){
 		return null;
 	}
 	
-	public Page<CategoryService> findAll(int number, int size){
+	public Page<CategoryService> findAll(Integer number, Integer size){
 		return null;
 	}
 	

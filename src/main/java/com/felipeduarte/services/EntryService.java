@@ -23,11 +23,11 @@ public class EntryService {
 		return false;
 	}
 	
-	public Page<Entry> findByNameAndCategory(String name, Category category, int number, int size){
+	public Page<Entry> findByNameAndCategory(String name, Category category, Integer number, Integer size){
 		return null;
 	}
 	
-	public Page<Entry> findByDateBetween(Date start, Date end, int number, int size){
+	public Page<Entry> findByDateBetween(Date start, Date end, Integer number, Integer size){
 		return null;
 	}
 		
