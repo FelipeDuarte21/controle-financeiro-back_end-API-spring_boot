@@ -1,4 +1,4 @@
-package com.felipeduarte.model.dtos;
+package com.felipeduarte.models.dtos;
 
 import java.util.Set;
 

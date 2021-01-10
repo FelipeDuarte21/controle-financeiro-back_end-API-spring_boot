@@ -1,4 +1,4 @@
-package com.felipeduarte.model;
+package com.felipeduarte.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;

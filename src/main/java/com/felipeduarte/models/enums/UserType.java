@@ -1,4 +1,4 @@
-package com.felipeduarte.model.enums;
+package com.felipeduarte.models.enums;
 
 
 public enum UserType {

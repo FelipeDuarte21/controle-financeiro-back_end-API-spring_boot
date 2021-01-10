@@ -1,8 +1,10 @@
-package com.felipeduarte.model;
+package com.felipeduarte.models;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,13 +12,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
-public class Entry implements Serializable{
+public class Category implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -25,21 +30,28 @@ public class Entry implements Serializable{
 	private Long id;
 	
 	@NotBlank
-	@Size(min = 3, max = 50, message = "Nome deve ter entre 3 a 50 caracteres")
+	@Size(min = 3, max = 50, message = "Nome deve estar entre 3 a 50 caracteres")
 	private String name;
 	
 	@NotBlank
-	@Size(max = 150, message = "Descrição deve ter no máximo 150 caracteres")
+	@Size(max = 150, message="Descrição até 150 caracteres")
 	private String description;
 	
-	private Date date;
+	private String observation;
+	
+	@JsonInclude
+	@Transient
+	private Double balance;
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id")
-	private Category category;
+	@JoinColumn(name = "user_id")
+	private User user;
 	
-	public Entry() {
+	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<Entry> entries = new ArrayList<>();
+	
+	public Category() {
 		
 	}
 
@@ -67,20 +79,36 @@ public class Entry implements Serializable{
 		this.description = description;
 	}
 
-	public Date getDate() {
-		return date;
+	public Double getBalance() {
+		return balance;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setBalance(Double balance) {
+		this.balance = balance;
 	}
 
-	public Category getCategory() {
-		return category;
+	public String getObservation() {
+		return observation;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setObservation(String observation) {
+		this.observation = observation;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<Entry> getEntries() {
+		return entries;
+	}
+
+	public void setEntries(List<Entry> entries) {
+		this.entries = entries;
 	}
 
 	@Override
@@ -99,7 +127,7 @@ public class Entry implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Entry other = (Entry) obj;
+		Category other = (Category) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
