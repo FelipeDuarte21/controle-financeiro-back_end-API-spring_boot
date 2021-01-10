@@ -1,15 +1,50 @@
 package com.felipeduarte.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
 public class User {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
-	private String password;
-	private Integer[] types;
 	
-	private List<Category> categories;
+	@NotBlank
+	@Size(min = 3,max = 50, message = "Nome ente 3 a 50 caracteres")
+	private String name;
+	
+	@NotBlank
+	@Email(message = "Email inválido")
+	@Size(max = 80, message = "Email com até 80 caracteres")
+	private String email;
+	
+	@Size(min = 8, max = 16, message = "Senha entre 8 a 16 caracteres")
+	private String password;
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "type_user")
+	private Set<Integer> types;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	private List<Category> categories = new ArrayList<>();
 	
 	public User() {
 		
@@ -39,11 +74,11 @@ public class User {
 		this.password = password;
 	}
 
-	public Integer[] getTypes() {
+	public Set<Integer> getTypes() {
 		return types;
 	}
 
-	public void setTypes(Integer[] types) {
+	public void setTypes(Set<Integer> types) {
 		this.types = types;
 	}
 

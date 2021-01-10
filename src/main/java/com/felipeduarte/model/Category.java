@@ -1,18 +1,52 @@
 package com.felipeduarte.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@Entity
 public class Category {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotBlank
+	@Size(min = 3, max = 50, message = "Nome deve estar entre 3 a 50 caracteres")
 	private String name;
+	
+	@NotBlank
+	@Size(max = 150, message="Descrição até 150 caracteres")
 	private String description;
-	private Double balance;
+	
 	private String observation;
 	
+	@JsonInclude
+	@Transient
+	private Double balance;
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
 	private User user;
 	
-	private List<Entry> entries;
+	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<Entry> entries = new ArrayList<>();
 	
 	public Category() {
 		
