@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,11 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.felipeduarte.models.Entry;
+import com.felipeduarte.services.EntryService;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/entry")
 public class EntryResource {
+	
+	@Autowired
+	private EntryService entryService;
 	
 	@PostMapping
 	public ResponseEntity<Entry> save(@RequestBody @Valid Entry entry){

@@ -2,14 +2,19 @@ package com.felipeduarte.services;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.felipeduarte.models.Category;
 import com.felipeduarte.models.Entry;
+import com.felipeduarte.repositories.EntryRepository;
 
 @Service
 public class EntryService {
+	
+	@Autowired
+	private EntryRepository entryRepository;
 	
 	public Entry save(Entry entry) {
 		return null;

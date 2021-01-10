@@ -2,6 +2,7 @@ package com.felipeduarte.resources;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,11 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.felipeduarte.models.User;
 import com.felipeduarte.models.dtos.UserDTO;
+import com.felipeduarte.services.UserService;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserResource {
+	
+	@Autowired
+	private UserService userService;
 	
 	@PostMapping
 	public ResponseEntity<User> save(@RequestBody @Valid User user){

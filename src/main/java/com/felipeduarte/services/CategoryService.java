@@ -1,10 +1,16 @@
 package com.felipeduarte.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import com.felipeduarte.repositories.CategoryRepository;
+
 @Service
 public class CategoryService {
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
 	public CategoryService save(CategoryService category) {
 		return null;

@@ -1,12 +1,17 @@
 package com.felipeduarte.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.felipeduarte.models.User;
+import com.felipeduarte.repositories.UserRepository;
 
 @Service
 public class UserService {
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	public User save(User user) {
 		return null;

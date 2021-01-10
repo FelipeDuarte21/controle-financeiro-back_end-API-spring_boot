@@ -2,6 +2,7 @@ package com.felipeduarte.resources;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,11 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.felipeduarte.models.Category;
+import com.felipeduarte.services.CategoryService;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/category")
 public class CategoryResource {
+	
+	@Autowired
+	private CategoryService categoryService;
 	
 	@PostMapping
 	public ResponseEntity<Category> save(@RequestBody @Valid Category category){
