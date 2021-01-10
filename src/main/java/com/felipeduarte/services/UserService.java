@@ -1,5 +1,7 @@
 package com.felipeduarte.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,14 @@ public class UserService {
 	private UserRepository userRepository;
 	
 	public User save(User user) {
-		return null;
+		
+		Optional<User> optionalUser = this.userRepository.findByEmail(user.getEmail());
+		
+		if(optionalUser.isPresent()) return null;
+		
+		user = this.userRepository.save(user);
+		
+		return user;
 	}
 	
 	public User update(User user) {
