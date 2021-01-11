@@ -1,9 +1,12 @@
 package com.felipeduarte.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import com.felipeduarte.models.Category;
 import com.felipeduarte.repositories.CategoryRepository;
 
 @Service
@@ -12,11 +15,21 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	public CategoryService save(CategoryService category) {
-		return null;
+	public Category save(Category category) {
+		
+		Optional<Category> optCategory = this.categoryRepository.findByName(category.getName());
+		
+		if(optCategory.isPresent()) {
+			category.setName(null);
+			return category;
+		}
+		
+		category = this.categoryRepository.save(category);
+		
+		return category;
 	}
 	
-	public CategoryService update(CategoryService category) {
+	public Category update(Category category) {
 		return null;
 	}
 	
@@ -24,15 +37,15 @@ public class CategoryService {
 		return false;
 	}
 	
-	public CategoryService findById(Long id) {
+	public Category findById(Long id) {
 		return null;
 	}
 	
-	public Page<CategoryService> findByName(String name, Integer number, Integer size){
+	public Page<Category> findByName(String name, Integer number, Integer size){
 		return null;
 	}
 	
-	public Page<CategoryService> findAll(Integer number, Integer size){
+	public Page<Category> findAll(Integer number, Integer size){
 		return null;
 	}
 	
