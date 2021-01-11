@@ -76,9 +76,13 @@ public class UserResource {
 	
 	@GetMapping
 	public ResponseEntity<Page<User>> findAll(
-			@RequestParam Integer number, 
-			@RequestParam Integer size){
-		return null;
+			@RequestParam(defaultValue = "0") Integer number, 
+			@RequestParam(defaultValue = "3") Integer size){
+		
+		Page<User> pageUser = this.userService.findAll(number, size);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(pageUser);
+		
 	}
 	
 }

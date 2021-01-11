@@ -90,7 +90,12 @@ public class UserService {
 	}
 	
 	public Page<User> findAll(Integer number, Integer size){
-		return null;
+		
+		PageRequest page = PageRequest.of(number, size, Direction.ASC, "name");
+		
+		Page<User> pageUser = this.userRepository.findAll(page);
+		
+		return pageUser;
 	}
 	
 }
