@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.felipeduarte.models.User;
+import com.felipeduarte.models.dtos.UserDTO;
 import com.felipeduarte.repositories.UserRepository;
 
 @Service
@@ -26,8 +27,29 @@ public class UserService {
 		return user;
 	}
 	
-	public User update(User user) {
-		return null;
+	public UserDTO update(UserDTO userDTO) {
+		
+		if(userDTO.getId() == null) {
+			userDTO.setId(null);
+			return userDTO;
+		}
+		
+		Optional<User> optionalUser = this.userRepository.findById(userDTO.getId());
+		
+		if(!optionalUser.isPresent()) {
+			userDTO.setName(null);
+			return userDTO;
+		}
+		
+		User user = User.convertUserDTOToUser(userDTO);
+		
+		user.setPassword(optionalUser.get().getPassword());
+		
+		user = this.userRepository.save(user);
+		
+		userDTO = User.convertUserToUserDTO(user);
+		
+		return userDTO;
 	}
 	
 	public boolean delete(Long id) {

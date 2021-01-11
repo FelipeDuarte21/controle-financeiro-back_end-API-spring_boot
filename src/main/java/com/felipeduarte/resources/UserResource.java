@@ -41,8 +41,15 @@ public class UserResource {
 	}
 	
 	@PutMapping
-	public ResponseEntity<User> update(@RequestBody @Valid UserDTO user){
-		return null;
+	public ResponseEntity<UserDTO> update(@RequestBody @Valid UserDTO userDTO){
+		
+		userDTO = this.userService.update(userDTO);
+		
+		if(userDTO.getId() == null) throw new ObjectBadRequestException("Id não pode ser nullo");
+		
+		if(userDTO.getName() == null) throw new ObjectBadRequestException("Usuario não encontrado!");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(userDTO);
 	}
 	
 	@DeleteMapping("/{id}")

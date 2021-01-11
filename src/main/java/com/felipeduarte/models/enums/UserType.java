@@ -1,6 +1,5 @@
 package com.felipeduarte.models.enums;
 
-
 public enum UserType {
 	
 	ADMIN(0, "ROLE_ADMIN"),

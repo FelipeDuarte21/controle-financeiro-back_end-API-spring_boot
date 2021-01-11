@@ -19,6 +19,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.felipeduarte.models.dtos.UserDTO;
 
 @Entity
 public class User implements Serializable{
@@ -124,6 +125,29 @@ public class User implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public static User convertUserDTOToUser(UserDTO userDTO) {
+		
+		User user = new User();
+		user.setId(userDTO.getId());
+		user.setName(userDTO.getName());
+		user.setEmail(userDTO.getEmail());
+		user.setPassword(null);
+		user.setTypes(userDTO.getTypes());
+		
+		return user;
+	}
+	
+	public static UserDTO convertUserToUserDTO(User user) {
+		
+		UserDTO userDTO = new UserDTO();
+		userDTO.setId(user.getId());
+		userDTO.setName(user.getName());
+		userDTO.setEmail(user.getEmail());
+		userDTO.setTypes(user.getTypes());
+		
+		return userDTO;
 	}
 	
 }
