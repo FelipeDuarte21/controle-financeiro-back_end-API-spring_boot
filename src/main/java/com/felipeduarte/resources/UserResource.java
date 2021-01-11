@@ -65,9 +65,13 @@ public class UserResource {
 	
 	@GetMapping("/search")
 	public ResponseEntity<Page<User>> findByName(@RequestParam String name, 
-			@RequestParam Integer number, 
-			@RequestParam Integer size){
-		return null;
+			@RequestParam(defaultValue = "0") Integer number, 
+			@RequestParam(defaultValue = "3") Integer size){
+		
+		Page<User> pageUser = this.userService.findByNome(name, number, size);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(pageUser);
+		
 	}
 	
 	@GetMapping

@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.felipeduarte.models.User;
@@ -72,8 +74,19 @@ public class UserService {
 		return optionalUser.get();
 	}
 	
-	public Page<User> findByNome(String nome, Integer number, Integer size){
-		return null;
+	public Page<User> findByNome(String name, Integer number, Integer size){
+		
+		PageRequest page = PageRequest.of(number,size, Direction.ASC, "name");
+		
+		Page<User> pageUser;
+		
+		if(!name.isEmpty()) {
+			pageUser = this.userRepository.findByNameContaining(name, page);
+		}else {
+			pageUser = this.findAll(number, size);
+		}
+		
+		return pageUser;
 	}
 	
 	public Page<User> findAll(Integer number, Integer size){
