@@ -53,11 +53,23 @@ public class UserService {
 	}
 	
 	public boolean delete(Long id) {
-		return false;
+		
+		User user = this.findById(id);
+		
+		if(user == null) return false;
+		
+		this.userRepository.delete(user);
+		
+		return true;
 	}
 	
 	public User findById(Long id) {
-		return null;
+		
+		Optional<User> optionalUser = this.userRepository.findById(id);
+		
+		if(!optionalUser.isPresent()) return null;
+		
+		return optionalUser.get();
 	}
 	
 	public Page<User> findByNome(String nome, Integer number, Integer size){

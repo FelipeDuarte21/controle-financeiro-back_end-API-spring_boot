@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.felipeduarte.exceptions.ObjectBadRequestException;
+import com.felipeduarte.exceptions.ObjectNotFoundException;
 import com.felipeduarte.models.User;
 import com.felipeduarte.models.dtos.UserDTO;
 import com.felipeduarte.services.UserService;
@@ -54,7 +55,12 @@ public class UserResource {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
-		return null;
+		
+		boolean resp = this.userService.delete(id);
+		
+		if(resp == false) throw new ObjectNotFoundException("Usuário não encontrado!");
+		
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
 	@GetMapping("/search")
