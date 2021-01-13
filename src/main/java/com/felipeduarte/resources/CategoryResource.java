@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.felipeduarte.exceptions.ObjectBadRequestException;
+import com.felipeduarte.exceptions.ObjectNotFoundException;
 import com.felipeduarte.models.Category;
 import com.felipeduarte.services.CategoryService;
 
@@ -55,7 +56,14 @@ public class CategoryResource {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
-		return null;
+		
+		boolean resp = this.categoryService.delete(id);
+		
+		if(resp == false) throw new ObjectNotFoundException("Categoria não encontrada!, "
+				+ "verifique o id informado!");
+		
+		return ResponseEntity.status(HttpStatus.OK).build();
+		
 	}
 	
 	@GetMapping("/{id}")

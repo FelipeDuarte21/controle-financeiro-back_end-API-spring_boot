@@ -46,7 +46,14 @@ public class CategoryService {
 	}
 	
 	public boolean delete(Long id) {
-		return false;
+		
+		Category category = this.findById(id);
+		
+		if(category == null) return false;
+		
+		this.categoryRepository.delete(category);
+		
+		return true;
 	}
 	
 	public Category findById(Long id) {
