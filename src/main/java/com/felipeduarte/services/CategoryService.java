@@ -91,7 +91,15 @@ public class CategoryService {
 	}
 	
 	public Page<Category> findAll(Integer number, Integer size){
-		return null;
+		
+		PageRequest page = PageRequest.of(number, size, Direction.ASC, "name");
+		
+		//Por enquanto
+		User user = this.userService.findById(1L);
+		
+		Page<Category> pageCategory = this.categoryRepository.findByUser(user, page);
+		
+		return pageCategory;
 	}
 	
 	

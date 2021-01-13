@@ -89,9 +89,12 @@ public class CategoryResource {
 	
 	@GetMapping
 	public ResponseEntity<Page<Category>> findAll(
-			@RequestParam Integer number, 
-			@RequestParam Integer page){
-		return null;
+			@RequestParam(defaultValue = "0") Integer number, 
+			@RequestParam(defaultValue = "3") Integer size){
+		
+		Page<Category> pageCategory = this.categoryService.findAll(number, size);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(pageCategory);
 	}
 	
 }
