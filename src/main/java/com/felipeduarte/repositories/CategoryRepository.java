@@ -15,7 +15,7 @@ public interface CategoryRepository extends JpaRepository<Category,Long> {
 	
 	public Page<Category> findByUser(User user, Pageable page);
 	
-	public Optional<Category> findByName(String name); //alterar aqui
+	public Optional<Category> findByNameAndUser(String name,User user); //alterar aqui
 	
 	public Page<Category> findByUserAndNameContaining(User user, String name, Pageable page);
 	

@@ -24,12 +24,17 @@ public class CategoryService {
 	
 	public Category save(Category category) {
 		
-		Optional<Category> optCategory = this.categoryRepository.findByName(category.getName());
+		//Por enquanto
+		User user = this.userService.findById(1L);
+		
+		Optional<Category> optCategory = this.categoryRepository.findByNameAndUser(category.getName(),user);
 		
 		if(optCategory.isPresent()) {
 			category.setName(null);
 			return category;
 		}
+		
+		category.setUser(user);
 		
 		category = this.categoryRepository.save(category);
 		
@@ -46,6 +51,8 @@ public class CategoryService {
 			category.setName(null);
 			return category;
 		}
+		
+		category.setUser(c.getUser());
 		
 		category = this.categoryRepository.save(category);
 		
