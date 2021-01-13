@@ -78,10 +78,13 @@ public class CategoryResource {
 	
 	@GetMapping("/search")
 	public ResponseEntity<Page<Category>> findByName(
-			@RequestParam String name, 
-			@RequestParam Integer number, 
-			@RequestParam Integer size){
-		return null;
+			@RequestParam(defaultValue = "") String name, 
+			@RequestParam(defaultValue = "0") Integer number, 
+			@RequestParam(defaultValue = "3") Integer size){
+		
+		Page<Category> pageCategory = this.categoryService.findByName(name, number, size);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(pageCategory);
 	}
 	
 	@GetMapping

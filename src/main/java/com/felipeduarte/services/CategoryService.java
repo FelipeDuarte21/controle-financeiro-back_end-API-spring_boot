@@ -4,9 +4,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.felipeduarte.models.Category;
+import com.felipeduarte.models.User;
 import com.felipeduarte.repositories.CategoryRepository;
 
 @Service
@@ -14,6 +17,10 @@ public class CategoryService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	//Por enquanto
+	@Autowired
+	private UserService userService;
 	
 	public Category save(Category category) {
 		
@@ -66,7 +73,21 @@ public class CategoryService {
 	}
 	
 	public Page<Category> findByName(String name, Integer number, Integer size){
-		return null;
+		
+		PageRequest page = PageRequest.of(number, size,Direction.ASC, "name");
+		
+		//Por enquanto
+		User user = this.userService.findById(1L);
+		
+		Page<Category> pageCategory;
+		
+		if(name.isEmpty()) {
+			pageCategory = this.findAll(number, size);
+		}else {
+			pageCategory = this.categoryRepository.findByUserAndNameContaining(user, name, page);
+		}
+		
+		return pageCategory;
 	}
 	
 	public Page<Category> findAll(Integer number, Integer size){
