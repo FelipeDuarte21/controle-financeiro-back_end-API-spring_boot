@@ -30,7 +30,19 @@ public class CategoryService {
 	}
 	
 	public Category update(Category category) {
-		return null;
+		
+		if(category.getId() == null) return category;
+		
+		Category c = this.findById(category.getId());
+		
+		if(c == null) {
+			category.setName(null);
+			return category;
+		}
+		
+		category = this.categoryRepository.save(category);
+		
+		return category;
 	}
 	
 	public boolean delete(Long id) {
@@ -38,7 +50,12 @@ public class CategoryService {
 	}
 	
 	public Category findById(Long id) {
-		return null;
+		
+		Optional<Category> categoryOptional = this.categoryRepository.findById(id);
+		
+		if(categoryOptional.isEmpty()) return null;
+		
+		return categoryOptional.get();
 	}
 	
 	public Page<Category> findByName(String name, Integer number, Integer size){

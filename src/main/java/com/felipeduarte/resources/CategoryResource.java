@@ -42,7 +42,15 @@ public class CategoryResource {
 	
 	@PutMapping
 	public ResponseEntity<Category> update(@RequestBody @Valid Category category){
-		return null;
+		
+		category = this.categoryService.update(category);
+		
+		if(category.getId() == null) throw new ObjectBadRequestException("Informe um id!");
+		
+		if(category.getName() == null) throw new ObjectBadRequestException("Id inválido!, verifique o id");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(category);
+		
 	}
 	
 	@DeleteMapping("/{id}")
