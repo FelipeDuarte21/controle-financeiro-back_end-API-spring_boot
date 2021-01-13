@@ -68,7 +68,12 @@ public class CategoryResource {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Category> findById(@PathVariable Long id){
-		return null;
+		
+		Category category = this.categoryService.findById(id);
+		
+		if(category == null) throw new ObjectNotFoundException("Categoria não encontrada!");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(category);
 	}
 	
 	@GetMapping("/search")
