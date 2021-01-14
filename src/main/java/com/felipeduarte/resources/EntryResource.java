@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.felipeduarte.exceptions.ObjectBadRequestException;
+import com.felipeduarte.exceptions.ObjectNotFoundException;
 import com.felipeduarte.models.Entry;
 import com.felipeduarte.models.dtos.EntryDTO;
 import com.felipeduarte.services.EntryService;
@@ -56,7 +57,13 @@ public class EntryResource {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
-		return null;
+		
+		boolean resp = this.entryService.delete(id);
+		
+		if(resp == false) throw new ObjectNotFoundException("Entrada não encontrada, verifique o id!");
+		
+		return ResponseEntity.status(HttpStatus.OK).build();
+		
 	}
 	
 	@GetMapping("/search")

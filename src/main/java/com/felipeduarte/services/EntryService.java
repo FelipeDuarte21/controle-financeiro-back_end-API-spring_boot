@@ -60,7 +60,14 @@ public class EntryService {
 	}
 	
 	public boolean delete(Long id) {
-		return false;
+		
+		Optional<Entry> optionalEntry = this.entryRepository.findById(id);
+		
+		if(optionalEntry.isEmpty()) return false;
+		
+		this.entryRepository.delete(optionalEntry.get());
+		
+		return true;
 	}
 	
 	public Page<Entry> findByNameAndCategory(String name, Category category, Integer number, Integer size){
