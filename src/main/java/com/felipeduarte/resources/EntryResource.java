@@ -66,6 +66,19 @@ public class EntryResource {
 		
 	}
 	
+	@GetMapping("category/{categoryId}")
+	public ResponseEntity<Page<Entry>> findAll(
+			@PathVariable Long categoryId,
+			@RequestParam(defaultValue = "0") Integer number, 
+			@RequestParam(defaultValue = "3") Integer size){
+		
+		Page<Entry> pageEntry = this.entryService.findAll(categoryId, number, size);
+		
+		if(pageEntry == null) throw new ObjectNotFoundException("categoria não encontrada, verifique o id!");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(pageEntry);	
+	}
+	
 	@GetMapping("category/{categoryId}/search")
 	public ResponseEntity<Page<Entry>> findByNameContaining(
 			@PathVariable Long categoryId,

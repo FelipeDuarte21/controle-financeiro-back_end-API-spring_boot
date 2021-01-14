@@ -72,13 +72,26 @@ public class EntryService {
 		return true;
 	}
 	
+	public Page<Entry> findAll(Long categoryId, Integer number, Integer size){
+		
+		Category category = this.categoryService.findById(categoryId);
+		
+		if(category == null) return null;
+		
+		PageRequest page = PageRequest.of(number,size,Direction.DESC,"date");
+		
+		Page<Entry> pageEntry = this.entryRepository.findByCategory(category, page);
+		
+		return pageEntry;
+	}
+	
 	public Page<Entry> findByNameContaining(Long categoryId, String name, Integer number, Integer size){
 		
 		Category category = this.categoryService.findById(categoryId);
 		
 		if(category == null) return null;
 		
-		PageRequest page = PageRequest.of(number,size,Direction.ASC,"name");
+		PageRequest page = PageRequest.of(number,size,Direction.DESC,"date");
 		
 		Page<Entry> pageEntry = this.entryRepository.findByCategoryAndNameContaining(category, name, page);
 		
@@ -92,7 +105,7 @@ public class EntryService {
 		
 		if(category == null) return null;
 		
-		PageRequest page = PageRequest.of(number,size,Direction.ASC,"name");
+		PageRequest page = PageRequest.of(number,size,Direction.DESC,"date");
 		
 		Page<Entry> pageEntry = this.entryRepository.findByCategoryAndDateBetween(category,start, end, page);
 		

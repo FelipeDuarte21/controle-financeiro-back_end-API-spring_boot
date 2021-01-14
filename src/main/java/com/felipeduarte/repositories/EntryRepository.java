@@ -12,6 +12,8 @@ import com.felipeduarte.models.Entry;
 
 @Repository
 public interface EntryRepository extends JpaRepository<Entry,Long>{
+	
+	public Page<Entry> findByCategory(Category category, Pageable page);
 
 	public Page<Entry> findByCategoryAndNameContaining(Category category, String name, Pageable page);
 	
