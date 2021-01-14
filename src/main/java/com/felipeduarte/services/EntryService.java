@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.felipeduarte.models.Category;
@@ -70,8 +72,18 @@ public class EntryService {
 		return true;
 	}
 	
-	public Page<Entry> findByNameAndCategory(String name, Category category, Integer number, Integer size){
-		return null;
+	public Page<Entry> findByNameAndCategory(String name, Long categoryId, Integer number, Integer size){
+		
+		Category category = this.categoryService.findById(categoryId);
+		
+		if(category == null) return null;
+		
+		PageRequest page = PageRequest.of(number,size,Direction.ASC,"name");
+		
+		Page<Entry> pageEntry = this.entryRepository.findByCategoryAndNameContaining(category, name, page);
+		
+		return pageEntry;
+		
 	}
 	
 	public Page<Entry> findByDateBetween(Date start, Date end, Integer number, Integer size){

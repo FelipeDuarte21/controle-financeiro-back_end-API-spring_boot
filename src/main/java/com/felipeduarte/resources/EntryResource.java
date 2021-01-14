@@ -66,12 +66,19 @@ public class EntryResource {
 		
 	}
 	
-	@GetMapping("/search")
-	public ResponseEntity<Page<Entry>> findByName(
+	@GetMapping("category/{categoryId}/search")
+	public ResponseEntity<Page<Entry>> findByNameAndCategory(
+			@PathVariable Long categoryId,
 			@RequestParam String name, 
 			@RequestParam Integer number, 
 			@RequestParam Integer size){
-		return null;
+		
+		Page<Entry> pageEntry = this.entryService.findByNameAndCategory(name, categoryId, number, size);
+		
+		if(pageEntry == null) throw new ObjectNotFoundException("categoria não encontrada, verifique o id!");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(pageEntry);
+		
 	}
 	
 	@GetMapping("/search/date")
