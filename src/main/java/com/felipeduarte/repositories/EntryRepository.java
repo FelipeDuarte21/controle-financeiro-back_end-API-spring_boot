@@ -15,6 +15,6 @@ public interface EntryRepository extends JpaRepository<Entry,Long>{
 
 	public Page<Entry> findByCategoryAndNameContaining(Category category, String name, Pageable page);
 	
-	public Page<Entry> findByDateBetween(Date start, Date end, Pageable page);
+	public Page<Entry> findByCategoryAndDateBetween(Category category, Date start, Date end, Pageable page);
 	
 }

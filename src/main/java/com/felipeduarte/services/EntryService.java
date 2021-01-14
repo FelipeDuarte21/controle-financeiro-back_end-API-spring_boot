@@ -72,7 +72,7 @@ public class EntryService {
 		return true;
 	}
 	
-	public Page<Entry> findByNameAndCategory(String name, Long categoryId, Integer number, Integer size){
+	public Page<Entry> findByNameContaining(Long categoryId, String name, Integer number, Integer size){
 		
 		Category category = this.categoryService.findById(categoryId);
 		
@@ -86,8 +86,17 @@ public class EntryService {
 		
 	}
 	
-	public Page<Entry> findByDateBetween(Date start, Date end, Integer number, Integer size){
-		return null;
+	public Page<Entry> findByDateBetween(Long categoryId, Date start, Date end, Integer number, Integer size){
+		
+		Category category = this.categoryService.findById(categoryId);
+		
+		if(category == null) return null;
+		
+		PageRequest page = PageRequest.of(number,size,Direction.ASC,"name");
+		
+		Page<Entry> pageEntry = this.entryRepository.findByCategoryAndDateBetween(category,start, end, page);
+		
+		return pageEntry;
 	}
 		
 }

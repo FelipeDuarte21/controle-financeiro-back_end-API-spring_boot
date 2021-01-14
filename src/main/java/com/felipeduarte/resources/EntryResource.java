@@ -67,13 +67,13 @@ public class EntryResource {
 	}
 	
 	@GetMapping("category/{categoryId}/search")
-	public ResponseEntity<Page<Entry>> findByNameAndCategory(
+	public ResponseEntity<Page<Entry>> findByNameContaining(
 			@PathVariable Long categoryId,
 			@RequestParam String name, 
-			@RequestParam Integer number, 
-			@RequestParam Integer size){
+			@RequestParam(defaultValue = "0") Integer number, 
+			@RequestParam(defaultValue = "3") Integer size){
 		
-		Page<Entry> pageEntry = this.entryService.findByNameAndCategory(name, categoryId, number, size);
+		Page<Entry> pageEntry = this.entryService.findByNameContaining(categoryId, name, number, size);
 		
 		if(pageEntry == null) throw new ObjectNotFoundException("categoria não encontrada, verifique o id!");
 		
@@ -81,14 +81,20 @@ public class EntryResource {
 		
 	}
 	
-	@GetMapping("/search/date")
+	@GetMapping("category/{categoryId}/search/date")
 	public ResponseEntity<Page<Entry>> findByDateBetween(
+			@PathVariable Long categoryId,
 			@RequestParam Date start, 
 			@RequestParam Date end, 
-			@RequestParam Integer number, 
-			@RequestParam Integer size){
+			@RequestParam(defaultValue = "0") Integer number, 
+			@RequestParam(defaultValue = "3") Integer size){
 		
-		return null;
+		Page<Entry> pageEntry = this.entryService.findByDateBetween(categoryId, start, end, number, size);
+		
+		if(pageEntry == null) throw new ObjectNotFoundException("categoria não encontrada, verifique o id!");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(pageEntry);
+		
 	}
 	
 }
