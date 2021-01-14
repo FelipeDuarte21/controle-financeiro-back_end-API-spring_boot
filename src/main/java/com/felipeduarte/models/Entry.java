@@ -10,10 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.felipeduarte.models.dtos.EntryDTO;
 
 @Entity
 public class Entry implements Serializable{
@@ -24,14 +24,11 @@ public class Entry implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
-	@Size(min = 3, max = 50, message = "Nome deve ter entre 3 a 50 caracteres")
 	private String name;
-	
-	@NotBlank
-	@Size(max = 150, message = "Descrição deve ter no máximo 150 caracteres")
+	private Double value;
 	private String description;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date date;
 	
 	@JsonIgnore
@@ -57,6 +54,14 @@ public class Entry implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Double getValue() {
+		return value;
+	}
+
+	public void setValue(Double value) {
+		this.value = value;
 	}
 
 	public String getDescription() {
@@ -106,6 +111,19 @@ public class Entry implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public static Entry convertEntryDTOToEntry(EntryDTO entryDTO) {
+		
+		Entry entry = new Entry();
+		
+		entry.setId(entryDTO.getId());
+		entry.setName(entryDTO.getName());
+		entry.setValue(entryDTO.getValue());
+		entry.setDescription(entryDTO.getDescription());
+		entry.setDate(entryDTO.getDate());
+		
+		return entry;
 	}
 	
 }

@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.felipeduarte.exceptions.ObjectBadRequestException;
 import com.felipeduarte.models.Entry;
+import com.felipeduarte.models.dtos.EntryDTO;
 import com.felipeduarte.services.EntryService;
 
 @CrossOrigin
@@ -30,8 +33,13 @@ public class EntryResource {
 	private EntryService entryService;
 	
 	@PostMapping
-	public ResponseEntity<Entry> save(@RequestBody @Valid Entry entry){
-		return null;
+	public ResponseEntity<Entry> save(@RequestBody @Valid EntryDTO entryDTO){
+		
+		Entry entry = this.entryService.save(entryDTO);
+		
+		if(entry.getCategory() == null) throw new ObjectBadRequestException("id da categoria inválido!");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(entry);
 	}
 	
 	@PutMapping
