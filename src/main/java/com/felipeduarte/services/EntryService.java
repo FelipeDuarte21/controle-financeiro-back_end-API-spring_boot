@@ -1,6 +1,7 @@
 package com.felipeduarte.services;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,8 +39,24 @@ public class EntryService {
 		return entry;
 	}
 	
-	public Entry update(Entry entry) {
-		return null;
+	public Entry update(EntryDTO entryDTO) {
+		
+		Entry entry = Entry.convertEntryDTOToEntry(entryDTO);
+		
+		if(entry.getId() == null) return entry;
+		
+		Optional<Entry> optionalEntry = this.entryRepository.findById(entry.getId());
+		
+		if(optionalEntry.isEmpty()) {
+			entry.setName(null);
+			return entry;
+		}
+		
+		entry.setCategory(optionalEntry.get().getCategory());
+		
+		entry = this.entryRepository.save(entry);
+		
+		return entry;
 	}
 	
 	public boolean delete(Long id) {

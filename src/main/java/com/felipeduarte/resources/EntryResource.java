@@ -43,8 +43,15 @@ public class EntryResource {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Entry> update(@RequestBody @Valid Entry entry){
-		return null;
+	public ResponseEntity<Entry> update(@RequestBody @Valid EntryDTO entryDTO){
+		
+		Entry entry = this.entryService.update(entryDTO);
+		
+		if(entry.getId() == null) throw new ObjectBadRequestException("Informe o id da entrada!");
+		
+		if(entry.getName() == null) throw new ObjectBadRequestException("entrada não encontrada, verifique o id informado!");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(entry);
 	}
 	
 	@DeleteMapping("/{id}")
