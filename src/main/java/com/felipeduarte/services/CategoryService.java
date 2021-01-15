@@ -8,9 +8,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.felipeduarte.exceptions.AuthorizationException;
 import com.felipeduarte.models.Category;
 import com.felipeduarte.models.User;
 import com.felipeduarte.repositories.CategoryRepository;
+import com.felipeduarte.security.UserDetailsAdapter;
+import com.felipeduarte.security.UserDetailsServiceAdapter;
 
 @Service
 public class CategoryService {
@@ -18,14 +21,9 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	//Por enquanto
-	@Autowired
-	private UserService userService;
-	
 	public Category save(Category category) {
 		
-		//Por enquanto
-		User user = this.userService.findById(1L);
+		User user = CategoryServicePermission.getUserLogged();
 		
 		Optional<Category> optCategory = this.categoryRepository.findByNameAndUser(category.getName(),user);
 		
@@ -54,6 +52,8 @@ public class CategoryService {
 		
 		category.setUser(c.getUser());
 		
+		CategoryServicePermission.verifyUserId(category.getUser().getId());
+		
 		category = this.categoryRepository.save(category);
 		
 		return category;
@@ -64,6 +64,8 @@ public class CategoryService {
 		Category category = this.findById(id);
 		
 		if(category == null) return false;
+		
+		CategoryServicePermission.verifyUserId(category.getUser().getId());
 		
 		this.categoryRepository.delete(category);
 		
@@ -76,6 +78,8 @@ public class CategoryService {
 		
 		if(categoryOptional.isEmpty()) return null;
 		
+		CategoryServicePermission.verifyUserId(categoryOptional.get().getUser().getId());
+		
 		return categoryOptional.get();
 	}
 	
@@ -83,8 +87,7 @@ public class CategoryService {
 		
 		PageRequest page = PageRequest.of(number, size,Direction.ASC, "name");
 		
-		//Por enquanto
-		User user = this.userService.findById(1L);
+		User user = CategoryServicePermission.getUserLogged();
 		
 		Page<Category> pageCategory;
 		
@@ -101,13 +104,43 @@ public class CategoryService {
 		
 		PageRequest page = PageRequest.of(number, size, Direction.ASC, "name");
 		
-		//Por enquanto
-		User user = this.userService.findById(1L);
+		User user = CategoryServicePermission.getUserLogged();
 		
 		Page<Category> pageCategory = this.categoryRepository.findByUser(user, page);
 		
 		return pageCategory;
 	}
 	
-	
+	private static class CategoryServicePermission{
+		
+		public static User getUserLogged() {
+			
+			UserDetailsAdapter user = (UserDetailsAdapter) UserDetailsServiceAdapter.getUser();
+			
+			if(user != null) {
+				
+				User u = new User();
+				u.setId(user.getId());
+				u.setName(user.getName());
+				u.setEmail(user.getUsername());
+				u.setPassword(user.getPassword());
+				
+				return u;
+				
+			}else {
+				throw new AuthorizationException("Usuário não logado!");
+			}
+			
+		}
+		
+		public static void verifyUserId(Long comparedId) {
+			User user = getUserLogged();
+			
+			if(!user.getId().equals(comparedId)) {
+				throw new AuthorizationException("Esta categoria não pertence ao usuário logado!");
+			}
+			
+		}
+		
+	}
 }

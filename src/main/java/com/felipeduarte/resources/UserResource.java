@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +21,9 @@ import com.felipeduarte.exceptions.ObjectBadRequestException;
 import com.felipeduarte.exceptions.ObjectNotFoundException;
 import com.felipeduarte.models.User;
 import com.felipeduarte.models.dtos.UserDTO;
+import com.felipeduarte.models.dtos.UserDTOWithPassword;
 import com.felipeduarte.services.UserService;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserResource {
@@ -32,9 +32,9 @@ public class UserResource {
 	private UserService userService;
 	
 	@PostMapping
-	public ResponseEntity<User> save(@RequestBody @Valid User user){
+	public ResponseEntity<User> save(@RequestBody @Valid UserDTOWithPassword userDTO){
 		
-		user = this.userService.save(user);
+		User user = this.userService.save(userDTO);
 		
 		if(user == null) throw new ObjectBadRequestException("Usuário já cadastrado!");
 		
@@ -63,6 +63,7 @@ public class UserResource {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/search")
 	public ResponseEntity<Page<User>> findByName(@RequestParam String name, 
 			@RequestParam(defaultValue = "0") Integer number, 
@@ -74,6 +75,7 @@ public class UserResource {
 		
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<Page<User>> findAll(
 			@RequestParam(defaultValue = "0") Integer number, 

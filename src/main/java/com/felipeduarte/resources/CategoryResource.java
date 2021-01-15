@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +22,6 @@ import com.felipeduarte.exceptions.ObjectNotFoundException;
 import com.felipeduarte.models.Category;
 import com.felipeduarte.services.CategoryService;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/category")
 public class CategoryResource {
@@ -30,6 +29,7 @@ public class CategoryResource {
 	@Autowired
 	private CategoryService categoryService;
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@PostMapping
 	public ResponseEntity<Category> save(@RequestBody @Valid Category category){
 		
@@ -41,6 +41,7 @@ public class CategoryResource {
 		
 	}
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@PutMapping
 	public ResponseEntity<Category> update(@RequestBody @Valid Category category){
 		
@@ -54,6 +55,7 @@ public class CategoryResource {
 		
 	}
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		
@@ -66,6 +68,7 @@ public class CategoryResource {
 		
 	}
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Category> findById(@PathVariable Long id){
 		
@@ -76,6 +79,7 @@ public class CategoryResource {
 		return ResponseEntity.status(HttpStatus.OK).body(category);
 	}
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@GetMapping("/search")
 	public ResponseEntity<Page<Category>> findByName(
 			@RequestParam(defaultValue = "") String name, 
@@ -87,6 +91,7 @@ public class CategoryResource {
 		return ResponseEntity.status(HttpStatus.OK).body(pageCategory);
 	}
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@GetMapping
 	public ResponseEntity<Page<Category>> findAll(
 			@RequestParam(defaultValue = "0") Integer number, 

@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.felipeduarte.models.dtos.UserDTO;
+import com.felipeduarte.models.dtos.UserDTOWithPassword;
 
 @Entity
 public class User implements Serializable{
@@ -39,7 +40,7 @@ public class User implements Serializable{
 	@Size(max = 80, message = "Email com até 80 caracteres")
 	private String email;
 	
-	@Size(min = 8, max = 16, message = "Senha entre 8 a 16 caracteres")
+	@JsonIgnore
 	private String password;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -148,6 +149,18 @@ public class User implements Serializable{
 		userDTO.setTypes(user.getTypes());
 		
 		return userDTO;
+	}
+	
+	public static User convertUserDTOWithPasswordToUser(UserDTOWithPassword userDTO) {
+		
+		User user = new User();
+		user.setId(userDTO.getId());
+		user.setName(userDTO.getName());
+		user.setEmail(userDTO.getEmail());
+		user.setPassword(userDTO.getPassword());
+		user.setTypes(userDTO.getTypes());
+		
+		return user;
 	}
 	
 }

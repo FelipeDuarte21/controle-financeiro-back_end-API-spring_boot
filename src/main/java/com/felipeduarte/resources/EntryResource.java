@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +25,6 @@ import com.felipeduarte.models.Entry;
 import com.felipeduarte.models.dtos.EntryDTO;
 import com.felipeduarte.services.EntryService;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/entry")
 public class EntryResource {
@@ -33,6 +32,7 @@ public class EntryResource {
 	@Autowired
 	private EntryService entryService;
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@PostMapping
 	public ResponseEntity<Entry> save(@RequestBody @Valid EntryDTO entryDTO){
 		
@@ -43,6 +43,7 @@ public class EntryResource {
 		return ResponseEntity.status(HttpStatus.OK).body(entry);
 	}
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@PutMapping
 	public ResponseEntity<Entry> update(@RequestBody @Valid EntryDTO entryDTO){
 		
@@ -55,6 +56,7 @@ public class EntryResource {
 		return ResponseEntity.status(HttpStatus.OK).body(entry);
 	}
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		
@@ -66,6 +68,7 @@ public class EntryResource {
 		
 	}
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@GetMapping("category/{categoryId}")
 	public ResponseEntity<Page<Entry>> findAll(
 			@PathVariable Long categoryId,
@@ -79,6 +82,7 @@ public class EntryResource {
 		return ResponseEntity.status(HttpStatus.OK).body(pageEntry);	
 	}
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@GetMapping("category/{categoryId}/search")
 	public ResponseEntity<Page<Entry>> findByNameContaining(
 			@PathVariable Long categoryId,
@@ -94,6 +98,7 @@ public class EntryResource {
 		
 	}
 	
+	@PreAuthorize("hasAnyRole('USER')")
 	@GetMapping("category/{categoryId}/search/date")
 	public ResponseEntity<Page<Entry>> findByDateBetween(
 			@PathVariable Long categoryId,
