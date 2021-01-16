@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.felipeduarte.models.enums.EntryType;
 
 @Entity
 public class Category implements Serializable{
@@ -48,7 +49,8 @@ public class Category implements Serializable{
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@JsonIgnore
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	private List<Entry> entries = new ArrayList<>();
 	
 	public Category() {
@@ -80,6 +82,18 @@ public class Category implements Serializable{
 	}
 
 	public Double getBalance() {
+		
+		double balance = 0;
+
+		for(Entry e: this.entries) {
+			if(e.getEntryType(null) == EntryType.PROFIT.getCode()) {
+				balance += e.getValue();
+			}
+			if(e.getEntryType(null) == EntryType.EXPENSE.getCode()){
+				balance -= e.getValue();
+			}
+		}
+		
 		return balance;
 	}
 

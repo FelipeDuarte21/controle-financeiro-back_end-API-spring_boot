@@ -86,6 +86,10 @@ public class Entry implements Serializable{
 	public String getEntryType() {
 		return EntryType.toEnum(this.entryType).getDescription();
 	}
+	
+	public Integer getEntryType(String x) {
+		return this.entryType;
+	}
 
 	public void setEntryType(Integer entryType) {
 		this.entryType = entryType;
