@@ -86,10 +86,10 @@ public class Category implements Serializable{
 		double balance = 0;
 
 		for(Entry e: this.entries) {
-			if(e.getEntryType(null) == EntryType.PROFIT.getCode()) {
+			if(e.getEntryType() == EntryType.PROFIT.getCode()) {
 				balance += e.getValue();
 			}
-			if(e.getEntryType(null) == EntryType.EXPENSE.getCode()){
+			if(e.getEntryType() == EntryType.EXPENSE.getCode()){
 				balance -= e.getValue();
 			}
 		}

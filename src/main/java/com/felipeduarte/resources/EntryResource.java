@@ -69,6 +69,19 @@ public class EntryResource {
 	}
 	
 	@PreAuthorize("hasAnyRole('USER')")
+	@GetMapping("/{id}")
+	public ResponseEntity<Entry> findById(@PathVariable Long id){
+		
+		Entry entry = this.entryService.findById(id);
+		
+		if(entry == null) {
+			throw new ObjectNotFoundException("Nada encontrado para o id Informado!");
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body(entry);
+	}
+	
+	@PreAuthorize("hasAnyRole('USER')")
 	@GetMapping("category/{categoryId}")
 	public ResponseEntity<Page<Entry>> findAll(
 			@PathVariable Long categoryId,

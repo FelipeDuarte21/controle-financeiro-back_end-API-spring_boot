@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.felipeduarte.models.dtos.EntryDTO;
-import com.felipeduarte.models.enums.EntryType;
 
 @Entity
 public class Entry implements Serializable{
@@ -83,14 +82,10 @@ public class Entry implements Serializable{
 		this.date = date;
 	}
 
-	public String getEntryType() {
-		return EntryType.toEnum(this.entryType).getDescription();
-	}
-	
-	public Integer getEntryType(String x) {
+	public Integer getEntryType() {
 		return this.entryType;
 	}
-
+	
 	public void setEntryType(Integer entryType) {
 		this.entryType = entryType;
 	}

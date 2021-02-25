@@ -72,6 +72,16 @@ public class EntryService {
 		return true;
 	}
 	
+	public Entry findById(Long id) {
+		
+		Optional<Entry> optEntry = this.entryRepository.findById(id);
+		
+		if(optEntry.isEmpty()) return null;
+		
+		return optEntry.get();
+		
+	}
+	
 	public Page<Entry> findAll(Long categoryId, Integer number, Integer size){
 		
 		Category category = this.categoryService.findById(categoryId);
